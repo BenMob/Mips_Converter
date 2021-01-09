@@ -1,4 +1,4 @@
-/**
+/*****
  * These are some manuel helper functions and variables 
  * to facilitate testing.
  */
@@ -6,8 +6,7 @@ import { Rtype_i } from "../src/interfaces/Rtype_i";
 import { Itype_i } from "../src/interfaces/Itype_i";
 import { Jtype_i } from "../src/interfaces/Jtype_i";
 
-
-/**
+/*****
  * Sample Inputs
  */
 export enum inputs{
@@ -49,10 +48,19 @@ export function isRtype(actual: Rtype_i | undefined, expected: Rtype_i): boolean
  * @param actual 
  * @param expected 
  */
-
 export function isItype(actual: Itype_i | undefined, expected: Itype_i): boolean{
-    // TODO: implement this
-    return false;
+    if(!actual){
+        return false;
+    }else{
+        return (
+            actual.instruction === expected.instruction &&
+            actual.format === expected.format &&
+            actual.op === expected.op &&
+            actual.rs === expected.rs &&
+            actual.rt === expected.rt &&
+            actual.immediate === expected.immediate
+        )
+    }
 }
 
 /**
@@ -61,9 +69,16 @@ export function isItype(actual: Itype_i | undefined, expected: Itype_i): boolean
  * @param actual 
  * @param expected 
  */
-
 export function isJtype(actual: Jtype_i | undefined, expected: Jtype_i): boolean{
-    // TODO: implement this
-    return false;
+    if(!actual){
+        return false;
+    }else{
+        return (
+            actual.instruction === expected.instruction &&
+            actual.format === expected.format &&
+            actual.op === expected.op &&
+            actual.address === expected.address
+        )
+    }
 }
 
