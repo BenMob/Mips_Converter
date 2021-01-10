@@ -1,6 +1,9 @@
-import Instruction from "../src/classes/Instruction";
+import Instruction from "../src/models/Instruction";
 import operations from "../data/operations.json";
 import registers from "../data/registers.json";
+import { Rtype_i } from "../src/interfaces/Rtype_i";
+import { Itype_i } from "../src/interfaces/Itype_i";
+import { Jtype_i } from "../src/interfaces/Jtype_i";
 import {inputs, isRtype, isItype, isJtype } from "./helpers"
 
 describe("Instruction Class", () => {
@@ -23,7 +26,7 @@ describe("Instruction Class", () => {
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
         const s2 : any = registers.find(register => register.assembly_name === "$s2");
         
-        expect(isRtype(rTypeAdd.type, {
+        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
             instruction: add.instruction,
             format: add.format,
             op: add.op,
@@ -44,7 +47,7 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const s4 : any = registers.find(register => register.assembly_name === "$s4");
         
-        expect(isRtype(rTypeMult.type, {
+        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
             instruction: mult.instruction,
             format: mult.format,
             op: mult.op,
@@ -64,7 +67,7 @@ describe("Instruction Class", () => {
         const mfhi : any = operations.find(operation => operation.instruction === "mfhi");
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
         
-        expect(isRtype(rTypeMfhi.type, {
+        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
             instruction: mfhi.instruction,
             format: mfhi.format,
             op: mfhi.op,
@@ -84,7 +87,7 @@ describe("Instruction Class", () => {
         const jr : any = operations.find(operation => operation.instruction === "jr $ra");
         const ra : any = registers.find(register => register.assembly_name === "$ra");
         
-        expect(isRtype(rTypeJr.type, {
+        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
             instruction: jr.instruction,
             format: jr.format,
             op: jr.op,
@@ -105,7 +108,7 @@ describe("Instruction Class", () => {
         const s5 : any = registers.find(register => register.assembly_name === "$s5");
         const s6 : any = registers.find(register => register.assembly_name === "$s6");
         
-        expect(isItype(iTypeAddi.type, {
+        expect(isItype(iTypeAddi.getType() as Itype_i, {
             instruction: addi.instruction,
             format: addi.format,
             op: addi.op,
@@ -124,7 +127,7 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         
-        expect(isItype(iTypeLw.type, {
+        expect(isItype(iTypeAddi.getType() as Itype_i, {
             instruction: lw.instruction,
             format: lw.format,
             op: lw.op,
@@ -143,7 +146,7 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         
-        expect(isItype(iTypeSw.type, {
+        expect(isItype(iTypeAddi.getType() as Itype_i, {
             instruction: sw.instruction,
             format: sw.format,
             op: sw.op,
@@ -160,7 +163,7 @@ describe("Instruction Class", () => {
 
         const j = operations.find(operation => operation.instruction === "j label")!;
         
-        expect(isJtype(jTypeJ.type, {
+        expect(isJtype(jTypeJ.getType() as Jtype_i, {
             instruction: j.instruction,
             format: j.format,
             op: j.op,

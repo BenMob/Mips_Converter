@@ -1,0 +1,40 @@
+body{
+    background-color: #000000;
+    color: lightgreen;
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh;
+}
+
+a{
+    color: lightgreen;
+    text-decoration: none;
+}
+
+a:hover{
+    color: green;
+    text-decoration: none;
+}
+
+.input-box{
+    background-color: #000000;
+    color: green;
+    width: 100%;
+}
+
+.input-box:focus{
+    background-color: #000000;
+    color: green;
+}
+
+.submit-button{
+    background-color: #000000;
+    color:  white;
+    border-radius: 5px;
+    border: solid 1px white;
+    padding: 5px;
+    margin-left: 10px;
+}
+.menu{
+    position: absolute;
+    left: 0;
+}
