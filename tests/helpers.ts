@@ -64,7 +64,7 @@ export function isItype(actual: Itype_i | undefined, expected: Itype_i): boolean
 }
 
 /**
- * Returns 'true' if 'actual' is defined and is the same as 'expected, otherwise, returns false.
+ * Returns 'true' if 'actual' is defined and is the same as 'expected', otherwise, returns false.
  * Intented to be used with 'J' format instructions.
  * @param actual 
  * @param expected 

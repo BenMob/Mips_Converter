@@ -1,4 +1,4 @@
-import { OperationsQueries } from "./OperationQueries";
+import { OperationsQueries } from "./OperationsQueries";
 import { RegistersQueries } from "./RegistersQueries";
 
 export{

@@ -161,7 +161,7 @@ describe("Instruction Class", () => {
      */
    it("init() method initializes 'type' attribute correctly on 'j' operation", () => {
 
-        const j = operations.find(operation => operation.instruction === "j label")!;
+        const j = operations.find(operation => operation.instruction === "j")!;
         
         expect(isJtype(jTypeJ.getType() as Jtype_i, {
             instruction: j.instruction,
