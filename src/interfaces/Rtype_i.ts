@@ -1,10 +1,12 @@
 export interface Rtype_i{
-    instruction: string,
-    format: string,
-    op: number,
-    rs: number,
-    rt: number,
-    rd: number,
-    shift_amount: number,
+    length?: number;
+    bits?: number[];
+    instruction: string | undefined,
+    format: string | undefined,
+    op: number | undefined,
+    rs: number | undefined,
+    rt: number | undefined,
+    rd: number | undefined,
+    shiftAmount: number | undefined,
     func: number
 }

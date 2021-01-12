@@ -7,7 +7,7 @@ export interface Instruction_i{
     getAssembly(): string | undefined;
     getDecimal(): string | undefined;
     getBinary(): string | undefined;
-    getErrorMessage(): string | null
+    getErrorMessage(): string | undefined;
 
     /*****  Implementation Details *****/
     // init(instruction: string): void,

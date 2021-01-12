@@ -1,6 +1,8 @@
 export interface Jtype_i{
-    instruction: string,
-    format: string,
-    op: number,
-    address: number | string
+    length?: number;
+    bits?: number[];
+    instruction: string | undefined,
+    format: string | undefined,
+    op: number | undefined,
+    address: number | string | undefined
 }

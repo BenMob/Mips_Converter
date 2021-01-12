@@ -1,9 +1,10 @@
-import { Instruction_i } from "../interfaces/Instruction_i"
-import { Itype_i } from "../interfaces/Itype_i";
-import { Jtype_i } from "../interfaces/Jtype_i";
-import { Rtype_i } from "../interfaces/Rtype_i";
-import { error_messages } from "../errors/Instruction_e";
+import { Instruction_i as IInstruction } from "../interfaces/Instruction_i"
+import { Itype_i as IItype } from "../interfaces/Itype_i";
+import { Jtype_i as IJtype} from "../interfaces/Jtype_i";
+import { Rtype_i as IRtype} from "../interfaces/Rtype_i";
+import errorMessages from "../errors/Instruction_e";
 import operations from "../data/operations.json";
+import formats from "../data/formats.json";
 
 /**
  * This class implements the Instruction_i interface
@@ -11,13 +12,14 @@ import operations from "../data/operations.json";
  * @param: instruction written in assembly | string
  */
 
-class Instruction implements Instruction_i{
+class Instruction implements IInstruction{
+    private validInstructionLength: number[] = [2,3,4];
     private type = undefined;
     private assembly = undefined;
     private decimal = undefined;
     private binary = undefined;
-    private errorMessage = null;
-    readonly error_messages = error_messages;
+    private errorMessage = undefined;
+    readonly errorMessages = errorMessages;
 
     constructor(instruction : string){
         this.validateInstruction(instruction)
@@ -31,34 +33,63 @@ class Instruction implements Instruction_i{
 
     private validateInstruction = (instruction: string) : Promise<string> => {
         return new Promise((resolve, reject) => {
-               if(instruction.length > 50){
-        reject("Error: Instruction is tool long, try again!");
-        return;
+            if(instruction.length > 50){
+                reject(this.errorMessages.INVALID);
+                return;
             }else{
-                const i = instruction.trim() .split(" ").filter(element => element !== "");
-                console.log(i)
-                if (![2,3,4].includes(i.length)){
-                    reject("Invalid instruction. try again!");
-                    return
+                const sanitizedInstruction = this.sanitizeInput(instruction);
+                if(!this.inputHasValidLength(sanitizedInstruction)){
+                    reject(this.errorMessages.INVALID)
+                }
+                if (!this.validInstructionLength.includes(sanitizedInstruction.length)){
+                    reject(this.errorMessages.INVALID);
+                    return;
                 }
 
-                const command = operations.find(operation => operation.instruction === i[0])
+                const command = operations.find(operation => operation.instruction === sanitizedInstruction[0])
                 if(command){
                     switch(command.format){
-                        case "R":
-                            // DO something
+                        case formats.R:
+                            // Verify valid registers and immediates etc ...
+                            // resolve(new Rtype(sanitizedInstruction));
                             break;
-                        case "I":
-                            // Do something
+                        case formats.I:
+                            // Verify valid registers and immediates etc ...
+                            // resolve(new Itype(sanitizedInstruction));
                             break;
-                        case "J":
-                            // Do something
+                        case formats.J:
+                            // Verify valid registers and immediates etc ...
+                            // resolve(new Jtype(sanitizedInstruction));
                             break;
                         default:
+                            reject(this.errorMessages.unSupportedOrInvalidCommand(sanitizedInstruction[0]));
                     }
+                }else{
+                    reject(this.errorMessages.unSupportedOrInvalidCommand(sanitizedInstruction[0]));
                 }
             }
         })
+    }
+
+    /**
+     * Takes input string and turns it into an array where
+     * each component of the input is in its own slot.
+     * CATOGORY: INPUT VALIDATION
+     * @param input
+     */
+    private sanitizeInput(input:string): string[] {
+        return input.trim().split(" ").filter(element => element !== "");
+    }
+
+    /**
+     * Takes an input aray and verifies if it has a valid
+     * length for a mips instruction.
+     *
+     * CATOGORY: INPUT VALIDATION
+     * @param input
+     */
+    private inputHasValidLength(input: string[]): boolean {
+        return this.validInstructionLength.includes(input.length);
     }
 
     private init(instruction: string) : void{
@@ -75,7 +106,7 @@ class Instruction implements Instruction_i{
         // Changes each decimal number of the instruction to assembly
     }
 
-    public getType(): Itype_i | Jtype_i | Rtype_i | undefined{
+    public getType(): IItype | IJtype | IRtype | undefined{
         return this.type;
     }
 
@@ -91,7 +122,7 @@ class Instruction implements Instruction_i{
         return this.binary;
     }
 
-    public getErrorMessage(): string | null{
+    public getErrorMessage(): string | undefined{
         return this.errorMessage;
     }
 

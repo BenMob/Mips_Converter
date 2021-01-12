@@ -37,7 +37,7 @@ export function isRtype(actual: Rtype_i | undefined, expected: Rtype_i): boolean
             actual.rs === expected.rs &&
             actual.rt === expected.rt &&
             actual.rd === expected.rd &&
-            actual.shift_amount === expected.shift_amount &&
+            actual.shiftAmount === expected.shiftAmount &&
             actual.func === expected.func
         )
 }

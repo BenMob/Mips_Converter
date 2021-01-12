@@ -1,6 +1,6 @@
 import Instruction from "../src/models/Instruction";
-import operations from "../data/operations.json";
-import registers from "../data/registers.json";
+import operations from "../src/data/operations.json";
+import registers from "../src/data/registers.json";
 import { Rtype_i } from "../src/interfaces/Rtype_i";
 import { Itype_i } from "../src/interfaces/Itype_i";
 import { Jtype_i } from "../src/interfaces/Jtype_i";
@@ -33,7 +33,7 @@ describe("Instruction Class", () => {
             rs: s1.number,
             rt: s2.number,
             rd: t0.number,
-            shift_amount: add.shift_amount,
+            shiftAmount: add.shiftAmount,
             func: add.func
         })).toBe(true);
     })
@@ -47,14 +47,14 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const s4 : any = registers.find(register => register.assembly_name === "$s4");
         
-        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
+        expect(isRtype(rTypeMult.getType() as Rtype_i, {
             instruction: mult.instruction,
             format: mult.format,
             op: mult.op,
             rs: s3.number,
             rt: s4.number,
             rd: mult.rd,
-            shift_amount: mult.shift_amount,
+            shiftAmount: mult.shiftAmount,
             func: mult.func
         })).toBe(true);
     })
@@ -67,14 +67,14 @@ describe("Instruction Class", () => {
         const mfhi : any = operations.find(operation => operation.instruction === "mfhi");
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
         
-        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
+        expect(isRtype(rTypeMfhi.getType() as Rtype_i, {
             instruction: mfhi.instruction,
             format: mfhi.format,
             op: mfhi.op,
             rs: mfhi.rs,
             rt: mfhi.rt,
             rd: s1.number,
-            shift_amount: mfhi.shift_amount,
+            shiftAmount: mfhi.shiftAmount,
             func: mfhi.func
         })).toBe(true);
     })    
@@ -87,14 +87,14 @@ describe("Instruction Class", () => {
         const jr : any = operations.find(operation => operation.instruction === "jr $ra");
         const ra : any = registers.find(register => register.assembly_name === "$ra");
         
-        expect(isRtype(rTypeAdd.getType() as Rtype_i, {
+        expect(isRtype(rTypeJr.getType() as Rtype_i, {
             instruction: jr.instruction,
             format: jr.format,
             op: jr.op,
             rs: ra.number,
             rt: jr.rt,
             rd: jr.rt,
-            shift_amount: jr.shift_amount,
+            shiftAmount: jr.shiftAmount,
             func: jr.func
         })).toBe(true);
     })    
@@ -127,7 +127,7 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         
-        expect(isItype(iTypeAddi.getType() as Itype_i, {
+        expect(isItype(iTypeLw.getType() as Itype_i, {
             instruction: lw.instruction,
             format: lw.format,
             op: lw.op,
@@ -146,7 +146,7 @@ describe("Instruction Class", () => {
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         
-        expect(isItype(iTypeAddi.getType() as Itype_i, {
+        expect(isItype(iTypeSw.getType() as Itype_i, {
             instruction: sw.instruction,
             format: sw.format,
             op: sw.op,
