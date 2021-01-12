@@ -89,12 +89,12 @@
         "op": 5
     },
     {
-        "instruction":"j label",
+        "instruction":"j",
         "format":"J",
         "op": 2
     },
     {
-        "instruction":"jal label",
+        "instruction":"jal",
         "format": "J",
         "op": 3
     }
