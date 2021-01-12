@@ -1,5 +1,6 @@
 import { Jtype_i as JInterface } from "../interfaces/Jtype_i";
 import formats from "../data/formats.json";
+import { OperationsQueries } from "../utils/dataUtils";
 
 class Jtype implements JInterface{
     readonly length: number = 2;
@@ -10,8 +11,17 @@ class Jtype implements JInterface{
     public address: string | number = "";
 
     constructor(instruction: string, address: number | string){
-        this.instruction = instruction;
-        this.address = address;
+        try {
+            const command = OperationsQueries.getOperationByInstruction(instruction);
+            if(command){
+                this.instruction = instruction;
+                this.address = address;
+                this.op = command.op;
+            }else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }
 
