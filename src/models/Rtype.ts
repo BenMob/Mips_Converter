@@ -1,6 +1,6 @@
 import { Rtype_i as RInterface } from "../interfaces/Rtype_i";
 import formats from "../data/formats.json";
-import {OperationsQueries, RegistersQueries } from "../utils/dataUtils";
+import { OperationsQueries, RegistersQueries } from "../utils/dataUtils";
 
 class Rtype implements RInterface{
     readonly length = 5;
