@@ -3,6 +3,7 @@ import formats from "../data/formats.json";
 import operations from "../data/operations.json";
 import registers from "../data/registers.json";
 import addresses from "../data/addresses.json";
+import { OperationsQueries } from "../utils/dataUtils";
 
 class Itype implements IIntereface{
     readonly length : number = 4;
@@ -22,12 +23,13 @@ class Itype implements IIntereface{
      * @param rt
      * @param immediate
      */
-    constructor(instruction: string, rs: string, rt: string, immediate: number){
+    constructor(instruction: string, rt: string, rs: string, immediate: number){
         try {
             this.instruction = instruction;
 
             // Validate Instruction and Op Code
-            const command : any =  operations.find(operation => operation.instruction === instruction);
+            const command : any =  OperationsQueries.getOperationByInstruction(instruction);
+
             if(command){
                 this.op = command.op;
             }else throw new Error(`Invalid or unsupported instruction ${instruction}`);
