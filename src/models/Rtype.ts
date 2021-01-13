@@ -18,15 +18,18 @@ class Rtype implements RInterface{
      *
      * @param instruction
      */
-    constructor(instruction:string, rs:string, rt?: string, rd?:string){
+    constructor(instruction:string, rd:string, rs?: string, rt?:string){
         try {
-            if(rs && rt && rd){
-                this.threeReg(instruction,rs, rt, rd)
-            }else if(rs && rt){
-                this.twoReg(instruction ,rs, rt);
-            }else if(rs){
-                this.oneReg(instruction, rs)       // Yes, if only two params are given 'rs' is considered as 'rd'
-            }else throw new Error("Missing Registers")
+            if(instruction){
+                this.instruction = instruction;
+                if(rd && rs && rt){
+                    this.threeReg(instruction, rd, rs, rt)
+                }else if(rd && rs){         
+                    this.twoReg(instruction ,rd, rs);
+                }else if(rd){
+                    this.oneReg(instruction, rd)       // Yes, if only two params are given 'rs' is considered as 'rd'
+                }else throw new Error("Missing 'register(s)' as parameter!")
+            } else throw new Error("Missing 'instruction' as parameter!") 
         } catch (error) {
             console.log(error);
         }
@@ -39,10 +42,13 @@ class Rtype implements RInterface{
      * @param rt
      * @param rd
      */
-    private threeReg(instruction: string, rs: string, rt: string, rd:string) : void{
+    private threeReg(instruction: string, rd: string, rs: string, rt:string) : void{
         try {
             const command = OperationsQueries.getOperationByInstruction(instruction);
             if(command){
+                // func
+                this.func = command.func;
+
                 // rs
                 const rsRegister = RegistersQueries.getRegisterByName(rs);
                 if(rsRegister){
@@ -60,7 +66,6 @@ class Rtype implements RInterface{
                 if(rdRegister){
                     this.rd = rdRegister.number;
                 }else throw new Error(`Invalid or Unsupported Register ${rd}`);
-
             } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
         } catch (error) {
             console.log(error);
@@ -77,6 +82,9 @@ class Rtype implements RInterface{
         try {
             const command = OperationsQueries.getOperationByInstruction(instruction);
             if(command){
+                // func
+                this.func = command.func;
+
                 // rs
                 const rsRegister = RegistersQueries.getRegisterByName(rs);
                 if(rsRegister){
@@ -100,16 +108,27 @@ class Rtype implements RInterface{
      * @param instruction
      * @param rd
      */
-    private oneReg(instruction: string, rd: string): void{
+    private oneReg(instruction: string, rs: string): void{
         try {
             const command = OperationsQueries.getOperationByInstruction(instruction);
             if(command){
-                // rd
-                const rdRegister = RegistersQueries.getRegisterByName(rd);
-                if(rdRegister){
-                    this.rd = rdRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rd}`);
+                // func
+                this.func = command.func;
 
+                // rs
+                if(instruction === "jr" && rs === "$ra"){
+                    this.rs = 31;
+                    return;
+                }else if(rs === "$ra"){
+                    throw new Error(`Invalid source register ${rs} on instruction 'jr', source register must be '$ra'`);
+                }else{
+                    const rsRegister = RegistersQueries.getRegisterByName(rs);
+                    if(rsRegister){
+                        this.rd = rsRegister.number;
+                    }else throw new Error(`Invalid or Unsupported Register ${rs}`);
+                }
+
+                
             } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
         } catch (error) {
             console.log(error);

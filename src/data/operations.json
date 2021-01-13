@@ -55,7 +55,7 @@
         "func": 42
     },
     {
-        "instruction":"jr $ra",
+        "instruction":"jr",
         "format":"R",
         "op": 0,
         "rt": 0,
