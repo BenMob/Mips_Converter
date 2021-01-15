@@ -3,9 +3,14 @@ import express from "express";
 import operations from "../data/operations.json";
 
 export const mipsToMachine = (req: express.Request, res: express.Response) => {
-    res.json([{
-        state : "Still implementing the app, but here is some data for you to play with",
 
-    }, ...operations]);
+    const instruction = new Instruction(req.body.instruction);
+    const error = instruction.getErrorMessage();
+
+    if(error){
+        res.json(error);
+    }else{
+        res.json(instruction);
+    }
 }
 
