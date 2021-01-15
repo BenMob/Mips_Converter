@@ -9,6 +9,6 @@
      res.render('index');
  })
 
- router.get('/convert', mipsToMachine);
+ router.post('/convert', mipsToMachine);
 
  export default router;
