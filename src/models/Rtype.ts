@@ -24,12 +24,12 @@ class Rtype implements RInterface{
                 this.instruction = instruction;
                 if(rd && rs && rt){
                     this.threeReg(instruction, rd, rs, rt)
-                }else if(rd && rs){         
+                }else if(rd && rs){
                     this.twoReg(instruction ,rd, rs);
                 }else if(rd){
                     this.oneReg(instruction, rd)       // Yes, if only two params are given 'rs' is considered as 'rd'
                 }else throw new Error("Missing 'register(s)' as parameter!")
-            } else throw new Error("Missing 'instruction' as parameter!") 
+            } else throw new Error("Missing 'instruction' as parameter!")
         } catch (error) {
             console.log(error);
         }
@@ -128,7 +128,7 @@ class Rtype implements RInterface{
                     }else throw new Error(`Invalid or Unsupported Register ${rs}`);
                 }
 
-                
+
             } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
         } catch (error) {
             console.log(error);
