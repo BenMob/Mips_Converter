@@ -162,7 +162,6 @@ describe("Instruction Class", () => {
    it("init() method initializes 'type' attribute correctly on 'j' operation", () => {
 
         const j = operations.find(operation => operation.instruction === "j")!;
-        console.log(jTypeJ.getType());
         expect(isJtype(jTypeJ.getType() as Jtype_i, {
             instruction: j.instruction,
             format: j.format,
@@ -170,9 +169,4 @@ describe("Instruction Class", () => {
             address: 49604
         })).toBe(true);
     })
-/*
-    it("removeCommas() removing commas appropriately"), () => {
-      
-    }
-*/
 })
