@@ -1,5 +1,5 @@
-import { OperationsQueries } from "./OperationsQueries";
-import { RegistersQueries } from "./RegistersQueries";
+import OperationsQueries from "./dataUtilsLib/OperationsQueries";
+import RegistersQueries  from "./dataUtilsLib/RegistersQueries";
 
 export{
     OperationsQueries,
