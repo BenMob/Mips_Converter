@@ -13,7 +13,7 @@ describe("Instruction Class", () => {
     const rTypeJr = new Instruction(inputs.R_TYPE_JR);
     const iTypeAddi = new Instruction(inputs.I_TYPE_ADDI);
     const iTypeLw = new Instruction(inputs.I_TYPE_LW);
-    const iTypeSw = new Instruction(inputs.I_TYPE_LW);
+    const iTypeSw = new Instruction(inputs.I_TYPE_SW);
     const jTypeJ = new Instruction(inputs.J_TYPE_J);
 
     /**
@@ -126,7 +126,7 @@ describe("Instruction Class", () => {
         const lw : any = operations.find(operation => operation.instruction === "lw");
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
-        
+
         expect(isItype(iTypeLw.getType() as Itype_i, {
             instruction: lw.instruction,
             format: lw.format,
