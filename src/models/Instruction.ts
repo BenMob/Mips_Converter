@@ -18,21 +18,25 @@ import { parseR, parseI, parseJ } from "../utils/instructionUtils"
 
 class Instruction implements IInstruction{
     readonly validInstructionLength: number[] = [2,3,4];
+    private instruction : string = ""
     private type: IRtype | IItype | IJtype | undefined = undefined;
-    private assembly = undefined;
-    private decimal = undefined;
-    private binary = undefined;
+    private assembly: string | undefined = undefined;
+    private decimal: string | undefined = undefined;
+    private binary: string | undefined = undefined;
     private errorMessage : undefined | string = undefined;
     readonly errorMessages = errorMessages;
 
-    constructor(instruction : string){
-        this.validateInstruction(instruction)
+    constructor(instruction: string){
+        this.instruction = instruction;
+    }
+
+    public init() : any {
+        return this.validateInstruction(this.instruction)
             .then((validInstruction) => {
-                //console.log(`Valid Instruction ${JSON.parse(validInstruction)}`)
-                this.init(validInstruction);
+                this.convert(validInstruction);
             })
             .catch(error => {
-                this.errorMessage = error.message;
+                this.errorMessage = error;
             })
     }
 
@@ -48,28 +52,49 @@ class Instruction implements IInstruction{
                 }
                 if (!this.validInstructionLength.includes(sanitizedInstruction.length)){
                     reject(this.errorMessages.INVALID);
-                    return;
                 }
 
                 const command = operations.find(operation => operation.instruction === sanitizedInstruction[0])
                 if(command){
-                    let inputs = null;
+                    let inputs = undefined;                                // The parsed input array. 
+                    let errorMsg = undefined;                              // The errorMsg from rType object.
                     switch(command.format){
                         case formats.R:
                             inputs = parseR(sanitizedInstruction);
+                            let rType = undefined;                                 // The rType instrucion object.
+
                             if(inputs){
 
                                 // 1 Register
                                 if(inputs.min){
-                                    resolve(new Rtype(inputs.param1, inputs.param2));
+                                    rType = new Rtype(inputs.param1, inputs.param2);
+                                    errorMsg = rType.getErrorMessage();
+                                    if(errorMsg){
+                                        reject(errorMsg);
+                                    }else{
+                                        resolve(rType);
+                                    }
+                                    
 
                                 // 2 Registers
                                 }else if(inputs.mid){
-                                    resolve(new Rtype(inputs.param1, inputs.param2, inputs.param3))
+                                    rType = new Rtype(inputs.param1, inputs.param2, inputs.param3);
+                                    errorMsg = rType.getErrorMessage();
+                                    if(errorMsg){
+                                        reject(errorMsg);
+                                    }else{
+                                        resolve(rType);
+                                    }
 
-                                //3 Registers
+                                // 3 Registers
                                 }else if(inputs.max){
-                                    resolve(new Rtype(inputs.param1, inputs.param2, inputs.param3, inputs.param4))
+                                    rType = new Rtype(inputs.param1, inputs.param2, inputs.param3, inputs.param4);
+                                    errorMsg = rType.getErrorMessage();
+                                    if(errorMsg){
+                                        reject(errorMsg);
+                                    }else{
+                                        resolve(rType);
+                                    }
 
                                 // Error
                                 } else {
@@ -81,26 +106,51 @@ class Instruction implements IInstruction{
                             }
 
                             break;
+
+                        // I Type
                         case formats.I:
                             inputs = parseI(sanitizedInstruction);
-
+                            let iType = undefined;
                             if(inputs) {
                                 const immediate = parseInt(inputs.param4)
+
+                                // Immediate is invslid, (i.e not a number)
                                 if(immediate === NaN){
                                     reject(this.errorMessages.invalidImmediate(inputs.param4));
                                 }
-                                resolve(new Itype(inputs.param1, inputs.param2, inputs.param3, immediate));
-                            }else reject(this.errorMessages.INVALID);
-                            break;
 
+                                iType = new Itype(inputs.param1, inputs.param2, inputs.param3, immediate);
+                                errorMsg = iType.getErrorMessage();
+
+                                if(errorMsg){
+                                    reject(errorMsg);
+                                }else{
+                                    resolve(iType);
+                                }
+
+                            }else {
+                                reject(this.errorMessages.INVALID);
+                            }
+                            break;
+                        
+                            // J type
                         case formats.J:
                             inputs = parseJ(sanitizedInstruction);
+                            let jType = undefined;
+
                             if(inputs){
                                 const address = parseInt(inputs.param2);
                                 if(address === NaN){
                                     reject(this.errorMessages.invalidImmediate(inputs.param2))
                                 }else{
-                                    resolve(new Jtype(inputs.param1, address))
+                                    jType = new Jtype(inputs.param1, address);
+                                    errorMsg = jType.getErrorMessage();
+
+                                    if(errorMsg){
+                                        reject(errorMsg);
+                                    }else{
+                                        resolve(iType);
+                                    }  
                                 }
                             } else {
                                 reject(this.errorMessages.INVALID)
@@ -191,7 +241,7 @@ class Instruction implements IInstruction{
          }
     }
 
-    private init(type: IRtype | IJtype | IItype) : void{
+    private convert(type: IRtype | IJtype | IItype) : void{
         this.type = type
         // Calls assembly to decimal to initialize decimal
         // Calls decimal to binary to initialize binary
