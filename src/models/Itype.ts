@@ -1,9 +1,9 @@
 import { Itype_i as IIntereface } from "../interfaces/Itype_i";
 import formats from "../data/formats.json";
-import operations from "../data/operations.json";
 import registers from "../data/registers.json";
 import addresses from "../data/addresses.json";
 import { OperationsQueries } from "../utils/dataUtils";
+import ErrorMessages from "../errors/Instruction_e";
 
 class Itype implements IIntereface{
     readonly length : number = 4;
@@ -14,6 +14,8 @@ class Itype implements IIntereface{
     public rs: number | undefined = undefined;
     public rt: number | undefined = undefined;
     public immediate: number | undefined = undefined;
+    readonly errorMessages = ErrorMessages;
+    private errorMessage : undefined | string = undefined;    
 
     /**
      *
@@ -32,28 +34,45 @@ class Itype implements IIntereface{
 
             if(command){
                 this.op = command.op;
-            }else throw new Error(`Invalid or unsupported instruction ${instruction}`);
+            } else { 
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
+                throw new Error(this.errorMessage);
+            }
 
             // Validate rs
             const rsRegister = registers.find(register => register.assembly_name === rs);
             if(rsRegister){
                 this.rs = rsRegister.number;
-            }else throw new Error(`Invalid or unsupported register ${rs}`);
+            }else {
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rs);
+                throw new Error(this.errorMessage);
+            }
 
             // Validate rt
             const rtRegister = registers.find(register => register.assembly_name === rt);
             if(rtRegister){
                 this.rt = rtRegister.number;
-            }else throw new Error(`Invalid or unsupported register ${rt}`);
+            }else {
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rt);
+                throw new Error(this.errorMessage);
+            }
 
-            // vAlidate Immediate
+            // validate Immediate
             if(immediate >= addresses.MIN && immediate <= addresses.MAX){
                 this.immediate = immediate;
-            }else throw new Error(`Immediates must be between ${addresses.MIN} and ${addresses.MAX}`);
+            }else{ 
+                this.errorMessage = this.errorMessages.IMMEDIATE_OUT_OF_RANGE
+                throw new Error(this.errorMessage);
+            }
 
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
+    }
+
+   // Returns the error message if there is one.
+    public getErrorMessage(): string | undefined{
+        return this.errorMessage;
     }
 }
 

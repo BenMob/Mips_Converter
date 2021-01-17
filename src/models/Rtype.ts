@@ -1,6 +1,7 @@
 import { Rtype_i as RInterface } from "../interfaces/Rtype_i";
 import formats from "../data/formats.json";
 import { OperationsQueries, RegistersQueries } from "../utils/dataUtils";
+import ErrorMessages from "../errors/Instruction_e"
 
 class Rtype implements RInterface{
     readonly length = 5;
@@ -13,6 +14,8 @@ class Rtype implements RInterface{
     public rt = 0;
     public rd = 0;
     public func = 0;
+    readonly errorMessages = ErrorMessages;
+    private errorMessage : undefined | string = undefined;
 
     /**
      *
@@ -20,19 +23,31 @@ class Rtype implements RInterface{
      */
     constructor(instruction:string, rd:string, rs?: string, rt?:string){
         try {
-            if(instruction){
-                this.instruction = instruction;
+            const command = OperationsQueries.getOperationByInstruction(instruction);
+            if(command){
+                this.instruction = command;
                 if(rd && rs && rt){
                     this.threeReg(instruction, rd, rs, rt)
                 }else if(rd && rs){
                     this.twoReg(instruction ,rd, rs);
                 }else if(rd){
                     this.oneReg(instruction, rd)       // Yes, if only two params are given 'rs' is considered as 'rd'
-                }else throw new Error("Missing 'register(s)' as parameter!")
-            } else throw new Error("Missing 'instruction' as parameter!")
+                }else {
+                    this.errorMessage = this.errorMessages.MISSING_REGISTER
+                    throw new Error(this.errorMessage)
+                }
+            } else{
+                this.errorMessage = this.errorMessages.MISSING_OPERATION;
+                throw new Error(this.errorMessage);
+            }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
+    }
+
+    // Returns the error message if there is one.
+    public getErrorMessage(): string | undefined{
+        return this.errorMessage;
     }
 
     /**
@@ -53,22 +68,35 @@ class Rtype implements RInterface{
                 const rsRegister = RegistersQueries.getRegisterByName(rs);
                 if(rsRegister){
                     this.rs = rsRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rs}`)
+                }else {
+                    this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rs);
+                    throw new Error(this.errorMessage);
+                }
 
                 // rt
                 const rtRegister = RegistersQueries.getRegisterByName(rt);
                 if(rtRegister){
                     this.rt = rtRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rt}`)
+                }else {
+                    this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rt);
+                    throw new Error(this.errorMessage);
+                }
 
                 // rd
                 const rdRegister = RegistersQueries.getRegisterByName(rd);
                 if(rdRegister){
                     this.rd = rdRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rd}`);
-            } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
+                }else {
+                    this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rd);
+                    throw new Error(this.errorMessage);
+                }
+
+            } else{ 
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
+                throw new Error(this.errorMessage);
+            }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 
@@ -89,17 +117,26 @@ class Rtype implements RInterface{
                 const rsRegister = RegistersQueries.getRegisterByName(rs);
                 if(rsRegister){
                     this.rs = rsRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rs}`)
+                }else {
+                    this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rs);
+                    throw new Error(this.errorMessage);
+                }
 
                 // rt
                 const rtRegister = RegistersQueries.getRegisterByName(rt);
                 if(rtRegister){
                     this.rt = rtRegister.number;
-                }else throw new Error(`Invalid or Unsupported Register ${rt}`)
+                }else {
+                    this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rt);
+                    throw new Error(this.errorMessage);
+                }
 
-            } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
+            } else { 
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
+                throw new Error(this.errorMessage);
+            }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 
@@ -120,18 +157,24 @@ class Rtype implements RInterface{
                     this.rs = 31;
                     return;
                 }else if(rs === "$ra"){
-                    throw new Error(`Invalid source register ${rs} on instruction 'jr', source register must be '$ra'`);
+                    this.errorMessage = this.errorMessages.invalidRegisterForJR(rs);
+                    throw new Error(this.errorMessage);
                 }else{
                     const rsRegister = RegistersQueries.getRegisterByName(rs);
                     if(rsRegister){
                         this.rd = rsRegister.number;
-                    }else throw new Error(`Invalid or Unsupported Register ${rs}`);
+                    }else {
+                        this.errorMessage = this.errorMessages.unSupportedOrInvalidRegister(rs);
+                        throw new Error(this.errorMessage);
+                    }
                 }
 
-
-            } else throw new Error(`Invalid or Unsupported instruction ${instruction}`)
+            } else { 
+                this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
+                throw new Error(this.errorMessage);
+            }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 }
