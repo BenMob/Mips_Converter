@@ -149,7 +149,7 @@ class Instruction implements IInstruction{
                                     if(errorMsg){
                                         reject(errorMsg);
                                     }else{
-                                        resolve(iType);
+                                        resolve(jType);
                                     }  
                                 }
                             } else {

@@ -24,8 +24,9 @@ class Rtype implements RInterface{
     constructor(instruction:string, rd:string, rs?: string, rt?:string){
         try {
             const command = OperationsQueries.getOperationByInstruction(instruction);
+
             if(command){
-                this.instruction = command;
+                this.instruction = command.instruction;
                 if(rd && rs && rt){
                     this.threeReg(instruction, rd, rs, rt)
                 }else if(rd && rs){
@@ -91,7 +92,7 @@ class Rtype implements RInterface{
                     throw new Error(this.errorMessage);
                 }
 
-            } else{ 
+            } else{
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
                 throw new Error(this.errorMessage);
             }
@@ -131,7 +132,7 @@ class Rtype implements RInterface{
                     throw new Error(this.errorMessage);
                 }
 
-            } else { 
+            } else {
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
                 throw new Error(this.errorMessage);
             }
@@ -169,7 +170,7 @@ class Rtype implements RInterface{
                     }
                 }
 
-            } else { 
+            } else {
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
                 throw new Error(this.errorMessage);
             }

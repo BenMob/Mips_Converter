@@ -18,10 +18,10 @@ class Jtype implements JInterface{
         try {
             const command = OperationsQueries.getOperationByInstruction(instruction);
             if(command){
-                this.instruction = instruction;
+                this.instruction = command.instruction;
                 this.address = address;
                 this.op = command.op;
-            } else { 
+            } else {
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
                 throw new Error(this.errorMessage);
             }

@@ -27,12 +27,11 @@ class Itype implements IIntereface{
      */
     constructor(instruction: string, rt: string, rs: string, immediate: number){
         try {
-            this.instruction = instruction;
-
             // Validate Instruction and Op Code
             const command : any =  OperationsQueries.getOperationByInstruction(instruction);
 
             if(command){
+                this.instruction = command.instruction;
                 this.op = command.op;
             } else { 
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
