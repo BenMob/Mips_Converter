@@ -8,13 +8,28 @@ import {inputs, isRtype, isItype, isJtype } from "../helpers"
 
 describe("Instruction Class", () => {
     const rTypeAdd = new Instruction(inputs.R_TYPE_ADD);
+    rTypeAdd.init();
+
     const rTypeMult = new Instruction(inputs.R_TYPE_MULT);
+    rTypeMult.init();
+
     const rTypeMfhi = new Instruction(inputs.R_TYPE_MFHI);
+    rTypeMfhi.init();
+
     const rTypeJr = new Instruction(inputs.R_TYPE_JR);
+    rTypeJr.init();
+
     const iTypeAddi = new Instruction(inputs.I_TYPE_ADDI);
+    iTypeAddi.init();
+
     const iTypeLw = new Instruction(inputs.I_TYPE_LW);
+    iTypeLw.init();
+
     const iTypeSw = new Instruction(inputs.I_TYPE_SW);
+    iTypeSw.init();
+
     const jTypeJ = new Instruction(inputs.J_TYPE_J);
+    jTypeJ.init();
 
     /**
      *  Test init() on the "add" operation. 
@@ -25,7 +40,7 @@ describe("Instruction Class", () => {
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
         const s2 : any = registers.find(register => register.assembly_name === "$s2");
- 
+
         expect(isRtype(rTypeAdd.getType() as Rtype_i, {
             instruction: add.instruction,
             format: add.format,
@@ -162,6 +177,7 @@ describe("Instruction Class", () => {
    it("init() method initializes 'type' attribute correctly on 'j' operation", () => {
 
         const j = operations.find(operation => operation.instruction === "j")!;
+  
         expect(isJtype(jTypeJ.getType() as Jtype_i, {
             instruction: j.instruction,
             format: j.format,
