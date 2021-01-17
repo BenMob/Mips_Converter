@@ -26,7 +26,7 @@
                 throw new Error(`Invalid expression ${expression}`)
             }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
             return null;
         }
     }   
@@ -59,7 +59,7 @@
             throw new Error (`Invalid instruction array ${instructionArray}`)
         }
     } catch (error) {
-        console.log(error);
+        console.warn(error);
         return null;
     }
  }

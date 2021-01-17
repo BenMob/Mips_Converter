@@ -51,7 +51,7 @@ function parseR(instructionArray : string[]) : RParameters | null {
             throw new Error(`Invalid instruction array ${instructionArray}`)
         }
     } catch (error) {
-        console.log(error);
+        console.warn(error);
         return null;
     }
 }
