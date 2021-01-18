@@ -7,8 +7,8 @@ import { BinarySchema } from "../utils/instructionUtilsLib/decimalToBinary";
 export interface Instruction_i{
     getType(): Itype_i | Jtype_i | Rtype_i | undefined
     getAssembly(): string | undefined;
-    getDecimal(): DecimalSchema | undefined;
-    getBinary(): BinarySchema | undefined;
+    getDecimal(): Array<DecimalSchema> | undefined;
+    getBinary(): Array<BinarySchema> | undefined;
     getErrorMessage(): string | undefined;
 
     /*****  Implementation Details *****/
