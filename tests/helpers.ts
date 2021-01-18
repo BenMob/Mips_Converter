@@ -5,6 +5,7 @@
 import { Rtype_i } from "../src/interfaces/Rtype_i";
 import { Itype_i } from "../src/interfaces/Itype_i";
 import { Jtype_i } from "../src/interfaces/Jtype_i";
+import { DecimalSchema } from "../src/utils/instructionUtilsLib/assemblyToDecimal";
 
 /*****
  * Sample Inputs
@@ -79,6 +80,31 @@ export function isJtype(actual: Jtype_i | undefined, expected: Jtype_i): boolean
             actual.op === expected.op &&
             actual.address === expected.address
         )
+    }
+}
+
+
+/**
+ * 
+ * @param actual Checks whether two schemas are the same
+ * @param expected 
+ */
+export function isExpectedRtypeDecimalSchema(actual: Array<DecimalSchema> | undefined , expected: Array<DecimalSchema>): boolean{
+    if(!actual){
+        return false;
+    }else{
+        let check = true;
+        if(actual.length === expected.length){
+            for(let i = 0; i < actual.length && check === true; i++){
+                if(actual[i].name !== expected[i].name || actual[i].value !== expected[i].value){
+                    check = false;
+                }
+            }
+        }else{
+            return false;
+        }
+        
+        return check;
     }
 }
 
