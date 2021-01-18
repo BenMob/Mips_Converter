@@ -1,0 +1,34 @@
+{
+    "op":{
+        "SHORT" : "op",
+        "FULL" : "Operation Code"
+    },
+    "rs":{
+        "SHORT" : "rs",
+        "FULL" : "Source Register"
+    },
+    "rd":{
+        "SHORT" : "rd",
+        "FULL" : "Destination Register"
+    },
+    "rt":{
+        "SHORT" : "rt",
+        "FULL": "Target Register"
+    },
+    "shiftAmount":{
+        "SHORT": "shiftAmount",
+        "FULL" : "shiftAmount"
+    },
+    "func": {
+        "SHORT" : "func",
+        "FULL" : "function"
+    },
+    "immediate": {
+        "SHORT": "immediate",
+        "FULL": "immediate"
+    },
+    "address": {
+        "SHORT": "address",
+        "FULL": "address"
+    }
+}
