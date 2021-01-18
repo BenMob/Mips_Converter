@@ -18,20 +18,19 @@ import { parseR, parseI, parseJ } from "../utils/instructionUtils"
 
 class Instruction implements IInstruction{
     readonly validInstructionLength: number[] = [2,3,4];
-    private instruction : string = ""
     private type: IRtype | IItype | IJtype | undefined = undefined;
-    private assembly: string | undefined = undefined;
+    private assembly: string = "";
     private decimal: string | undefined = undefined;
     private binary: string | undefined = undefined;
     private errorMessage : undefined | string = undefined;
     readonly errorMessages = errorMessages;
 
     constructor(instruction: string){
-        this.instruction = instruction;
+        this.assembly = instruction;
     }
 
     public init() : any {
-        return this.validateInstruction(this.instruction)
+        return this.validateInstruction(this.assembly)
             .then((validInstruction) => {
                 this.convert(validInstruction);
             })
