@@ -246,11 +246,11 @@ class Instruction implements IInstruction{
         // Calls decimal to binary to initialize binary
     }
 
-    private assemblyToDecimal() : void{
+    private fromAssemblyToDecimal() : void{
         // Changes each assembly component of the instruction to decimal number
     }
 
-    private decimalToBinary() : void{
+    private fromDecimalToBinary() : void{
         // Changes each decimal number of the instruction to assembly
     }
 
