@@ -89,7 +89,7 @@ export function isJtype(actual: Jtype_i | undefined, expected: Jtype_i): boolean
  * @param actual Checks whether two schemas are the same
  * @param expected 
  */
-export function isExpectedRtypeDecimalSchema(actual: Array<DecimalSchema> | undefined , expected: Array<DecimalSchema>): boolean{
+export function isExpectedDecimalSchema(actual: Array<DecimalSchema> | undefined , expected: Array<DecimalSchema>): boolean{
     if(!actual){
         return false;
     }else{
