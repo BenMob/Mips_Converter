@@ -6,9 +6,12 @@ import Rtype from "./Rtype";
 import Jtype from "./Jtype";
 import Itype from "./Itype";
 import errorMessages from "../errors/Instruction_e";
+import internalErrors from "../errors/InternalErrors";
 import operations from "../data/operations.json";
 import formats from "../data/formats.json";
-import { parseR, parseI, parseJ } from "../utils/instructionUtils"
+import { parseR, parseI, parseJ, assemblyToDecimal, decimalToBinary } from "../utils/instructionUtils";
+import { DecimalSchema } from "../utils/instructionUtilsLib/assemblyToDecimal";
+import { BinarySchema } from "../utils/instructionUtilsLib/decimalToBinary";
 
 /**
  * This class implements the Instruction_i interface
@@ -20,8 +23,8 @@ class Instruction implements IInstruction{
     readonly validInstructionLength: number[] = [2,3,4];
     private type: IRtype | IItype | IJtype | undefined = undefined;
     private assembly: string = "";
-    private decimal: string | undefined = undefined;
-    private binary: string | undefined = undefined;
+    private decimal: Array<DecimalSchema> | undefined = undefined;
+    private binary: Array<BinarySchema> | undefined = undefined;
     private errorMessage : undefined | string = undefined;
     readonly errorMessages = errorMessages;
 
@@ -55,8 +58,8 @@ class Instruction implements IInstruction{
 
                 const command = operations.find(operation => operation.instruction === sanitizedInstruction[0])
                 if(command){
-                    let inputs = undefined;                                // The parsed input array. 
-                    let errorMsg = undefined;                              // The errorMsg from rType object.
+                    let inputs = undefined;                                        // The parsed input array. 
+                    let errorMsg = undefined;                                      // The errorMsg from rType object.
                     switch(command.format){
                         case formats.R:
                             inputs = parseR(sanitizedInstruction);
@@ -240,19 +243,50 @@ class Instruction implements IInstruction{
          }
     }
 
+    /**
+     * 
+     * @param type Converts the values of 
+     */
     private convert(type: IRtype | IJtype | IItype) : void{
-        this.type = type
-        // Calls assembly to decimal to initialize decimal
-        // Calls decimal to binary to initialize binary
+        this.type = type;
+
+        /**
+         *  Note
+         * 'this.convertFromAssemblyToDecimal()' must always be called before 
+         * 'this.convertFromDecimalToBinary()'because 'this.convertFromDecimalToBinary()' 
+         *  uses the value of 'this.decimal', which is set by 
+         * 'this.convertFromAssemblyToDecimal()', otherwhise 'this.convertFromDecimalToBinary()'
+         *  will return 'undefined'
+         */
+        this.convertFromAssemblyToDecimal();
+        //this.convertFromDecimalToBinary();
     }
 
-    private fromAssemblyToDecimal() : void{
-        // Changes each assembly component of the instruction to decimal number
+    private convertFromAssemblyToDecimal() : void{
+        try {
+            const result = assemblyToDecimal(this.type!);
+            if(result){
+                this.decimal = result;
+            }else{
+                throw new Error(internalErrors.ERROR);
+            }
+        } catch (error) {
+            console.warn(error);
+        }
     }
 
-    private fromDecimalToBinary() : void{
-        // Changes each decimal number of the instruction to assembly
+    /**
+     * Converts the 'type' into a DecimalSchema
+     */
+    private convertFromDecimalToBinary() : void{
+        try {
+            // Call assemblyToDecimal and assign the result to this.decimal
+        } catch (error) {
+            console.warn(error);
+        }
     }
+
+    /* Client Methods */
 
     public getType(): IItype | IJtype | IRtype | undefined{
         return this.type;
@@ -262,11 +296,11 @@ class Instruction implements IInstruction{
         return this.assembly;
     }
 
-    public getDecimal(): string | undefined{
+    public getDecimal(): Array<DecimalSchema> | undefined{
         return this.decimal;
     }
 
-    public getBinary(): string | undefined{
+    public getBinary(): Array<BinarySchema> | undefined{
         return this.binary;
     }
 
