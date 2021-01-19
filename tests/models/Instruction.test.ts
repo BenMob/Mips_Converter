@@ -4,7 +4,7 @@ import registers from "../../src/data/registers.json";
 import { Rtype_i } from "../../src/interfaces/Rtype_i";
 import { Itype_i } from "../../src/interfaces/Itype_i";
 import { Jtype_i } from "../../src/interfaces/Jtype_i";
-import {inputs, isRtype, isItype, isJtype } from "../helpers"
+import {inputs, isRtype, isItype, isJtype, isExpectedDecimalSchema } from "../helpers"
 
 describe("Instruction Class", () => {
     const rTypeAdd = new Instruction(inputs.R_TYPE_ADD);
@@ -108,7 +108,7 @@ describe("Instruction Class", () => {
             op: jr.op,
             rs: ra.number,
             rt: jr.rt,
-            rd: jr.rt,
+            rd: jr.rd,
             shiftAmount: jr.shiftAmount,
             func: jr.func
         })).toBe(true);
@@ -184,5 +184,238 @@ describe("Instruction Class", () => {
             op: j.op,
             address: 49604
         })).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type R's 'add'!", () => {
+        const add : any = operations.find(operation => operation.instruction === "add");
+        const t0 : any = registers.find(register => register.assembly_name === "$t0");
+        const s1 : any = registers.find(register => register.assembly_name === "$s1");
+        const s2 : any = registers.find(register => register.assembly_name === "$s2");
+
+        expect(isExpectedDecimalSchema(rTypeAdd.getDecimal(),
+            [
+                {
+                    name: "op",
+                    value: add.op
+                },
+                {
+                    name: "shiftAmount",
+                    value: add.shiftAmount
+                },
+                {
+                    name:"rs",
+                    value: s1.number
+                },
+
+                {
+                    name:"rt",
+                    value: s2.number
+                },
+                {
+                    name: "rd",
+                    value: t0.number
+                },
+                {
+                    name: "func",
+                    value: add.func
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type R's 'mult'!", () => {
+        const mult : any = operations.find(operation => operation.instruction === "mult");
+        const s3 : any = registers.find(register => register.assembly_name === "$s3");
+        const s4 : any = registers.find(register => register.assembly_name === "$s4");
+
+        expect(isExpectedDecimalSchema(rTypeMult.getDecimal(),
+            [
+                {
+                    name: "op",
+                    value: mult.op
+                },
+                {
+                    name: "shiftAmount",
+                    value: mult.shiftAmount
+                },
+                {
+                    name:"rs",
+                    value: s3.number
+                },
+
+                {
+                    name:"rt",
+                    value: s4.number
+                },
+                {
+                    name: "rd",
+                    value: mult.rd
+                },
+                {
+                    name: "func",
+                    value: mult.func
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type R's 'mfhi'!", () => {
+        const mfhi : any = operations.find(operation => operation.instruction === "mfhi");
+        const s1 : any = registers.find(register => register.assembly_name === "$s1");
+        
+        expect(isExpectedDecimalSchema(rTypeMfhi.getDecimal(),
+            [
+                {
+                    name: "op",
+                    value: mfhi.op
+                },
+                {
+                    name: "shiftAmount",
+                    value: mfhi.shiftAmount
+                },
+                {
+                    name:"rs",
+                    value: mfhi.rs
+                },
+                {
+                    name:"rt",
+                    value: mfhi.rt
+                },
+                {
+                    name: "rd",
+                    value: s1.number
+                },
+                {
+                    name: "func",
+                    value: mfhi.func
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type R's 'jr'", () => {
+        const jr : any = operations.find(operation => operation.instruction === "jr");
+        const ra : any = registers.find(register => register.assembly_name === "$ra");
+
+        expect(isExpectedDecimalSchema(rTypeJr.getDecimal(), 
+            [
+                {
+                    name: "op",
+                    value: jr.op
+                },
+                {
+                    name: "shiftAmount",
+                    value: jr.shiftAmount
+                },
+                {
+                    name:"rs",
+                    value: ra.number
+                },
+                {
+                    name:"rt",
+                    value: jr.rt
+                },
+                {
+                    name: "rd",
+                    value: jr.rd
+                },
+                {
+                    name: "func",
+                    value: jr.func
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type I's 'addi'", () => {
+        const addi : any = operations.find(operation => operation.instruction === "addi");
+        const s5 : any = registers.find(register => register.assembly_name === "$s5");
+        const s6 : any = registers.find(register => register.assembly_name === "$s6"); 
+
+        expect(isExpectedDecimalSchema(iTypeAddi.getDecimal(), [
+            {
+                name: "op",
+                value: addi.op
+            },
+            {
+                name: "rs",
+                value: s6.number
+            },
+            {
+                name: "rt",
+                value: s5.number
+            },
+            {
+                name: "immediate",
+                value: 50
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type I's 'lw'", () => {
+        const lw : any = operations.find(operation => operation.instruction === "lw");
+        const s3 : any = registers.find(register => register.assembly_name === "$s3");
+        const t0 : any = registers.find(register => register.assembly_name === "$t0");
+        
+        expect(isExpectedDecimalSchema(iTypeLw.getDecimal(),
+        [
+            {
+                name: "op",
+                value: lw.op
+            },
+            {
+                name: "rs",
+                value: s3.number
+            },
+            {
+                name: "rt",
+                value: t0.number
+            },
+            {
+                name: "immediate",
+                value: 32
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type I's 'sw'", () => {
+        const sw : any = operations.find(operation => operation.instruction === "sw");
+        const s3 : any = registers.find(register => register.assembly_name === "$s3");
+        const t0 : any = registers.find(register => register.assembly_name === "$t0");       
+
+       expect(isExpectedDecimalSchema(iTypeSw.getDecimal(),
+        [
+            {
+                name: "op",
+                value: sw.op
+            },
+            {
+                name: "rs",
+                value: s3.number
+            },
+            {
+                name: "rt",
+                value: t0.number
+            },
+            {
+                name: "immediate",
+                value: 32
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromAssemblyToDecimal converts successfully for Type J's 'j'", () => {
+        const j = operations.find(operation => operation.instruction === "j")!;
+        expect(isExpectedDecimalSchema(jTypeJ.getDecimal(),
+        [
+            {
+                name: "op",
+                value: j.op
+            },
+            {
+                name: "address",
+                value: 49604
+            }
+        ])).toBe(true);
     })
 })
