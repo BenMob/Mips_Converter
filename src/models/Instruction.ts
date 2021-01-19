@@ -261,7 +261,7 @@ class Instruction implements IInstruction{
         this.convertFromAssemblyToDecimal();
         //this.convertFromDecimalToBinary();
     }
-
+    
     private convertFromAssemblyToDecimal() : void{
         try {
             const result = assemblyToDecimal(this.type!);
