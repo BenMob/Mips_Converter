@@ -4,7 +4,7 @@ import registers from "../../src/data/registers.json";
 import { Rtype_i } from "../../src/interfaces/Rtype_i";
 import { Itype_i } from "../../src/interfaces/Itype_i";
 import { Jtype_i } from "../../src/interfaces/Jtype_i";
-import {inputs, isRtype, isItype, isJtype, isExpectedDecimalSchema } from "../helpers"
+import {inputs, isRtype, isItype, isJtype, isExpectedDecimalSchema, isExpectedBinarySchema } from "../helpers"
 
 describe("Instruction Class", () => {
     const rTypeAdd = new Instruction(inputs.R_TYPE_ADD);
@@ -186,7 +186,16 @@ describe("Instruction Class", () => {
         })).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type R's 'add'!", () => {
+
+
+
+
+
+
+    /*****************************************
+     * convertFromAssemblyToDecimal() TESTS
+     */
+    it("convertFromAssemblyToDecimal() converts successfully for Type R's 'add'!", () => {
         const add : any = operations.find(operation => operation.instruction === "add");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
@@ -223,7 +232,7 @@ describe("Instruction Class", () => {
         )).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type R's 'mult'!", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type R's 'mult'!", () => {
         const mult : any = operations.find(operation => operation.instruction === "mult");
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const s4 : any = registers.find(register => register.assembly_name === "$s4");
@@ -259,7 +268,7 @@ describe("Instruction Class", () => {
         )).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type R's 'mfhi'!", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type R's 'mfhi'!", () => {
         const mfhi : any = operations.find(operation => operation.instruction === "mfhi");
         const s1 : any = registers.find(register => register.assembly_name === "$s1");
         
@@ -291,9 +300,11 @@ describe("Instruction Class", () => {
                 }
             ]
         )).toBe(true);
+
+
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type R's 'jr'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type R's 'jr'", () => {
         const jr : any = operations.find(operation => operation.instruction === "jr");
         const ra : any = registers.find(register => register.assembly_name === "$ra");
 
@@ -327,7 +338,7 @@ describe("Instruction Class", () => {
         )).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type I's 'addi'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type I's 'addi'", () => {
         const addi : any = operations.find(operation => operation.instruction === "addi");
         const s5 : any = registers.find(register => register.assembly_name === "$s5");
         const s6 : any = registers.find(register => register.assembly_name === "$s6"); 
@@ -352,7 +363,7 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type I's 'lw'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type I's 'lw'", () => {
         const lw : any = operations.find(operation => operation.instruction === "lw");
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");
@@ -378,7 +389,7 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type I's 'sw'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type I's 'sw'", () => {
         const sw : any = operations.find(operation => operation.instruction === "sw");
         const s3 : any = registers.find(register => register.assembly_name === "$s3");
         const t0 : any = registers.find(register => register.assembly_name === "$t0");       
@@ -404,7 +415,7 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal converts successfully for Type J's 'j'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type J's 'j'", () => {
         const j = operations.find(operation => operation.instruction === "j")!;
         expect(isExpectedDecimalSchema(jTypeJ.getDecimal(),
         [
@@ -418,4 +429,256 @@ describe("Instruction Class", () => {
             }
         ])).toBe(true);
     })
+
+
+
+
+
+
+
+
+    /*****************************************
+     * convertFromDecimalToBinary() TESTS
+     */
+    it("convertFromDecimalToBinary() converts successfully for Type R's 'add'!", () => {
+        expect(isExpectedBinarySchema(rTypeAdd.getBinary(),
+            [
+                {
+                    name: "op",
+                    value: "000000",
+                    bits: 6
+                },
+                {
+                    name:"rs",
+                    value: "10001",
+                    bits: 5
+                },
+                {
+                    name:"rt",
+                    value: "10010",
+                    bits: 5
+                },
+                {
+                    name: "rd",
+                    value: "01000",
+                    bits: 5
+                },
+                {
+                    name: "shiftAmount",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "func",
+                    value: "100000",
+                    bits: 6
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type R's 'mult'!", () => {
+        expect(isExpectedBinarySchema(rTypeMult.getBinary(),
+            [
+               {
+                    name: "op",
+                    value: "000000",
+                    bits: 6
+                },
+                {
+                    name:"rs",
+                    value: "10011",
+                    bits: 5
+                },
+                {
+                    name:"rt",
+                    value: "10100",
+                    bits: 5
+                },
+                {
+                    name: "rd",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "shiftAmount",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "func",
+                    value: "010010",
+                    bits: 6
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary converts successfully for Type R's 'mfhi'!", () => {       
+        expect(isExpectedBinarySchema(rTypeMfhi.getBinary(),
+            [
+               {
+                    name: "op",
+                    value: "000000",
+                    bits: 6
+                },
+                {
+                    name:"rs",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name:"rt",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "rd",
+                    value: "10001",
+                    bits: 5
+                },
+                {
+                    name: "shiftAmount",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "func",
+                    value: "001010",
+                    bits: 6
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type R's 'jr'", () => {
+        expect(isExpectedBinarySchema(rTypeJr.getBinary(), 
+            [
+               {
+                    name: "op",
+                    value: "000000",
+                    bits: 6
+                },
+                {
+                    name:"rs",
+                    value: "11111",
+                    bits: 5
+                },
+                {
+                    name:"rt",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "rd",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "shiftAmount",
+                    value: "00000",
+                    bits: 5
+                },
+                {
+                    name: "func",
+                    value: "001000",
+                    bits: 6
+                }
+            ]
+        )).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type I's 'addi'", () => {
+        expect(isExpectedBinarySchema(iTypeAddi.getBinary(), [
+            {
+                name: "op",
+                value: "001000",
+                bits: 6
+            },
+            {
+                name: "rs",
+                value: "10110",
+                bits: 5
+            },
+            {
+                name: "rt",
+                value: "10101",
+                bits: 5
+            },
+            {
+                name: "immediate",
+                value: "0000000000110010",
+                bits: 16
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary converts successfully for Type I's 'lw'", () => {
+        expect(isExpectedBinarySchema(iTypeLw.getBinary(),
+        [
+           {
+                name: "op",
+                value: "100011",
+                bits: 6
+            },
+            {
+                name: "rs",
+                value: "10011",
+                bits: 5
+            },
+            {
+                name: "rt",
+                value: "01000",
+                bits: 5
+            },
+            {
+                name: "immediate",
+                value: "0000000000100000",
+                bits: 16
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type I's 'sw'", () => {
+       expect(isExpectedBinarySchema(iTypeSw.getBinary(),
+        [
+           {
+                name: "op",
+                value: "101011",
+                bits: 6
+            },
+            {
+                name: "rs",
+                value: "10011",
+                bits: 5
+            },
+            {
+                name: "rt",
+                value: "01000",
+                bits: 5
+            },
+            {
+                name: "immediate",
+                value: "0000000000100000",
+                bits: 16
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type J's 'j'", () => {
+        expect(isExpectedBinarySchema(jTypeJ.getBinary(),
+        [
+            {
+                name: "op",
+                value: "000010",
+                bits: 6
+            },
+            {
+                name: "address",
+                value: "00000000001100000111000100",
+                bits: 26
+            }
+        ])).toBe(true);
+    })
 })
+
