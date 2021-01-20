@@ -235,10 +235,6 @@ describe("Instruction Class", () => {
                     value: mult.op
                 },
                 {
-                    name: "shiftAmount",
-                    value: mult.shiftAmount
-                },
-                {
                     name:"rs",
                     value: s3.number
                 },
@@ -250,6 +246,10 @@ describe("Instruction Class", () => {
                 {
                     name: "rd",
                     value: mult.rd
+                },
+                {
+                    name: "shiftAmount",
+                    value: mult.shiftAmount
                 },
                 {
                     name: "func",
@@ -270,10 +270,6 @@ describe("Instruction Class", () => {
                     value: mfhi.op
                 },
                 {
-                    name: "shiftAmount",
-                    value: mfhi.shiftAmount
-                },
-                {
                     name:"rs",
                     value: mfhi.rs
                 },
@@ -284,6 +280,10 @@ describe("Instruction Class", () => {
                 {
                     name: "rd",
                     value: s1.number
+                },
+                {
+                    name: "shiftAmount",
+                    value: mfhi.shiftAmount
                 },
                 {
                     name: "func",
@@ -304,10 +304,6 @@ describe("Instruction Class", () => {
                     value: jr.op
                 },
                 {
-                    name: "shiftAmount",
-                    value: jr.shiftAmount
-                },
-                {
                     name:"rs",
                     value: ra.number
                 },
@@ -318,6 +314,10 @@ describe("Instruction Class", () => {
                 {
                     name: "rd",
                     value: jr.rd
+                },
+                {
+                    name: "shiftAmount",
+                    value: jr.shiftAmount
                 },
                 {
                     name: "func",
