@@ -7,7 +7,6 @@ export const mipsToMachine = (req: express.Request, res: express.Response) => {
 
     instruction.init().then(() => {
         const error = instruction.getErrorMessage();
-        console.warn(error);
         if(error){
             res.json({error: error});
         }else{
