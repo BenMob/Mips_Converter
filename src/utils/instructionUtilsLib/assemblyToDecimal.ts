@@ -22,7 +22,7 @@ const extractEntries = (type : IRtype | IItype | IJtype) => {
                     entry[0] === entries.rs.SHORT ||
                     entry[0] === entries.rd.SHORT ||
                     entry[0] === entries.rt.SHORT ||
-                    entry[0] ===  entries.shiftAmount.SHORT ||
+                    entry[0] === entries.shiftAmount.SHORT ||
                     entry[0] === entries.func.SHORT
                 )
             case formats.I:
