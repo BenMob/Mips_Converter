@@ -11,7 +11,12 @@ export const mipsToMachine = (req: express.Request, res: express.Response) => {
         if(error){
             res.json({error: error});
         }else{
-            res.json(instruction.getType());
+            res.json({
+                type : instruction.getType(),
+                assembly: instruction.getAssembly(),
+                decimal: instruction.getDecimal(),
+                binary: instruction.getBinary()
+            });
         }
     })
 }
