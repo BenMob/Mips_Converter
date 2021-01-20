@@ -199,10 +199,6 @@ describe("Instruction Class", () => {
                     value: add.op
                 },
                 {
-                    name: "shiftAmount",
-                    value: add.shiftAmount
-                },
-                {
                     name:"rs",
                     value: s1.number
                 },
@@ -214,6 +210,10 @@ describe("Instruction Class", () => {
                 {
                     name: "rd",
                     value: t0.number
+                },
+                {
+                    name: "shiftAmount",
+                    value: add.shiftAmount
                 },
                 {
                     name: "func",
