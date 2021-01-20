@@ -8,11 +8,11 @@ class Rtype implements RInterface{
     readonly bits = [6,5,5,5,5,6];
     readonly op = 0;
     readonly format = formats.R;
-    readonly shiftAmount = 0;
     public instruction: string | undefined = undefined;
     public rs = 0;
     public rt = 0;
     public rd = 0;
+    readonly shiftAmount = 0;
     public func = 0;
     readonly errorMessages = ErrorMessages;
     private errorMessage : undefined | string = undefined;
