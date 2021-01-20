@@ -1,5 +1,5 @@
 enum internalErrors {
-    ERROR = "Internal Error, please le the developer know!"
+    ERROR = "Internal Error, please let the developer know!"
 }
 
 export default internalErrors;
