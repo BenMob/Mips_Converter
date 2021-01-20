@@ -6,6 +6,7 @@ import { Rtype_i } from "../src/interfaces/Rtype_i";
 import { Itype_i } from "../src/interfaces/Itype_i";
 import { Jtype_i } from "../src/interfaces/Jtype_i";
 import { DecimalSchema } from "../src/utils/instructionUtilsLib/assemblyToDecimal";
+import { BinarySchema } from "../src/utils/instructionUtilsLib/decimalToBinary";
 
 /*****
  * Sample Inputs
@@ -86,7 +87,7 @@ export function isJtype(actual: Jtype_i | undefined, expected: Jtype_i): boolean
 
 /**
  * 
- * @param actual Checks whether two schemas are the same
+ * @param actual Checks whether two decimal schemas are the same
  * @param expected 
  */
 export function isExpectedDecimalSchema(actual: Array<DecimalSchema> | undefined , expected: Array<DecimalSchema>): boolean{
@@ -105,6 +106,30 @@ export function isExpectedDecimalSchema(actual: Array<DecimalSchema> | undefined
         }
         
         return check;
+    }
+}
+
+/**
+ * 
+ * @param actual Checks whether two binary schemas are the same
+ * @param expected 
+ */
+export function isExpectedBinarySchema(actual: Array<BinarySchema> | undefined, expected: Array<BinarySchema>): boolean{
+    if(!actual){
+        return false;
+    }else{
+        let check = true;
+        if(actual.length === expected.length){
+            for(let i = 0; i < actual.length && check === true; i++){
+                if(actual[i].name !== expected[i].name || actual[i].value !== expected[i].value || actual[i].bits !== expected[i].bits){
+                    check = false;
+                }
+            }
+        }else{
+            return false;
+        }
+        
+        return check;        
     }
 }
 
