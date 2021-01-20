@@ -20,13 +20,13 @@ import { BinarySchema } from "../utils/instructionUtilsLib/decimalToBinary";
  */
 
 class Instruction implements IInstruction{
-    readonly validInstructionLength: number[] = [2,3,4];
+    static readonly validInstructionLength: number[] = [2,3,4];
+    readonly errorMessages = errorMessages;
     private type: IRtype | IItype | IJtype | undefined = undefined;
     private assembly: string = "";
     private decimal: Array<DecimalSchema> | undefined = undefined;
     private binary: Array<BinarySchema> | undefined = undefined;
     private errorMessage : undefined | string = undefined;
-    readonly errorMessages = errorMessages;
 
     constructor(instruction: string){
         this.assembly = instruction;
@@ -52,7 +52,7 @@ class Instruction implements IInstruction{
                 if(!this.inputHasValidLength(sanitizedInstruction)){
                     reject(this.errorMessages.INVALID)
                 }
-                if (!this.validInstructionLength.includes(sanitizedInstruction.length)){
+                if (!Instruction.validInstructionLength.includes(sanitizedInstruction.length)){
                     reject(this.errorMessages.INVALID);
                 }
 
@@ -190,7 +190,7 @@ class Instruction implements IInstruction{
      * @param input
      */
     private inputHasValidLength(input: string[]): boolean {
-        return this.validInstructionLength.includes(input.length);
+        return Instruction.validInstructionLength.includes(input.length);
     }
 
     /**
@@ -221,18 +221,18 @@ class Instruction implements IInstruction{
         }
 
          switch(input.length){
-             case this.validInstructionLength[0]:       // 2 (No Comma should be present therefore nothing is removed)
+             case Instruction.validInstructionLength[0]:       // 2 (No Comma should be present therefore nothing is removed)
                 if(hasComma(Array.from(input))){
                     this.errorMessage = this.errorMessages.INVALID;
                     return false;
                 }else{
                     return true;
                 }
-             case this.validInstructionLength[1]:       // 3 (remove one comma)
+             case Instruction.validInstructionLength[1]:       // 3 (remove one comma)
                     input[1] = byeComma(input[1]);
                     input[2] = byeComma(input[2]);
                     return true;
-             case this.validInstructionLength[2]:       // 4 (remove two commas)
+             case Instruction.validInstructionLength[2]:       // 4 (remove two commas)
                     input[1] = byeComma(input[1]);
                     input[2] = byeComma(input[2]);
                     input[3] = byeComma(input[3]);
@@ -259,7 +259,7 @@ class Instruction implements IInstruction{
          *  will return 'undefined'
          */
         this.convertFromAssemblyToDecimal();
-        //this.convertFromDecimalToBinary();
+        this.convertFromDecimalToBinary();
     }
     
     private convertFromAssemblyToDecimal() : void{
@@ -280,7 +280,12 @@ class Instruction implements IInstruction{
      */
     private convertFromDecimalToBinary() : void{
         try {
-            // Call assemblyToDecimal and assign the result to this.decimal
+            const result = decimalToBinary(this.getDecimal()!, this.getType()!.bits!);
+            if(result){
+                this.binary = result
+            }else{
+                throw new Error(internalErrors.ERROR);
+            }
         } catch (error) {
             console.warn(error);
         }
