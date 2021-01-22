@@ -21,9 +21,9 @@ class Server {
         app.listen(port, () => console.log(`Server running on http://localhost:${8080}`));  // Listen to the port.
         app.set("view engine", "ejs");                                                      // Set the template engine.
         app.set("views", "./src/views");                                                    // Set the location of templates.
-        app.use(express.static("public"));                                                  // Set location of the public assets. 
+        app.use(express.static("public"));                                                  // Set location of the public assets.
         app.use(express.json());                                                            // For parsing application/json
-        app.use(express.urlencoded({extended: true}));                                      // For parsing application/x-www-form-urlencoded 
+        app.use(express.urlencoded({extended: true}));                                      // For parsing application/x-www-form-urlencoded
         app.use(morgan("dev"));                                                             // Use 'dev' logger.
     }
 
