@@ -24,8 +24,8 @@ class Instruction implements IInstruction{
     readonly errorMessages = errorMessages;
     private type: IRtype | IItype | IJtype | undefined = undefined;
     private assembly: string = "";
-    private decimal: Array<DecimalSchema> | undefined = undefined;
-    private binary: Array<BinarySchema> | undefined = undefined;
+    private decimal: DecimalSchema[] | undefined = undefined;
+    private binary: BinarySchema[] | undefined = undefined;
     private errorMessage : undefined | string = undefined;
 
     constructor(instruction: string){
@@ -58,12 +58,12 @@ class Instruction implements IInstruction{
 
                 const command = operations.find(operation => operation.instruction === sanitizedInstruction[0])
                 if(command){
-                    let inputs = undefined;                                        // The parsed input array. 
-                    let errorMsg = undefined;                                      // The errorMsg from rType object.
+                    let inputs;                                        // The parsed input array.
+                    let errorMsg;                                      // The errorMsg from rType object.
                     switch(command.format){
                         case formats.R:
                             inputs = parseR(sanitizedInstruction);
-                            let rType = undefined;                                 // The rType instrucion object.
+                            let rType;                                 // The rType instrucion object.
 
                             if(inputs){
 
@@ -76,7 +76,7 @@ class Instruction implements IInstruction{
                                     }else{
                                         resolve(rType);
                                     }
-                                    
+
 
                                 // 2 Registers
                                 }else if(inputs.mid){
@@ -112,12 +112,12 @@ class Instruction implements IInstruction{
                         // I Type
                         case formats.I:
                             inputs = parseI(sanitizedInstruction);
-                            let iType = undefined;
+                            let iType;
                             if(inputs) {
-                                const immediate = parseInt(inputs.param4)
+                                const immediate = parseInt(inputs.param4, 10)
 
                                 // Immediate is invslid, (i.e not a number)
-                                if(immediate === NaN){
+                                if(!immediate){
                                     reject(this.errorMessages.invalidImmediate(inputs.param4));
                                 }
 
@@ -134,15 +134,15 @@ class Instruction implements IInstruction{
                                 reject(this.errorMessages.INVALID);
                             }
                             break;
-                        
+
                             // J type
                         case formats.J:
                             inputs = parseJ(sanitizedInstruction);
-                            let jType = undefined;
+                            let jType;
 
                             if(inputs){
-                                const address = parseInt(inputs.param2);
-                                if(address === NaN){
+                                const address = parseInt(inputs.param2, 16);
+                                if(!address){
                                     reject(this.errorMessages.invalidImmediate(inputs.param2))
                                 }else{
                                     jType = new Jtype(inputs.param1, address);
@@ -152,7 +152,7 @@ class Instruction implements IInstruction{
                                         reject(errorMsg);
                                     }else{
                                         resolve(jType);
-                                    }  
+                                    }
                                 }
                             } else {
                                 reject(this.errorMessages.INVALID)
@@ -170,15 +170,15 @@ class Instruction implements IInstruction{
 
     /**
      * Takes input string and turns it into an array where
-     * each component of the input is in its own slot.
-     * 
+     * each component of the input is in its own field.
+     *
      * CATOGORY: INPUT VALIDATION
      * @param input
      */
     private sanitizeInput(input:string): string[]{
-        let sanitized = input.trim().split(" ").filter(element => element !== "");
+        const sanitized = input.trim().split(" ").filter(element => element !== "");
         this.removeCommas(sanitized);
-        
+
         return sanitized;
     }
 
@@ -196,14 +196,14 @@ class Instruction implements IInstruction{
     /**
      * Takes an input array and removes all commas in each
      * where they appear.
-     * 
+     *
      * CATEGORY: INPUT VALIDATION
-     * @param input 
+     * @param input
      */
     private removeCommas(input: string[]): boolean{
 
         // Takes a string and removes commas on both sides
-        let byeComma = (str: string):string => {
+        const byeComma = (str: string):string => {
             if(str[0] === ',' && str[str.length - 1] === ','){
                 return str.substring(1, str.length - 1);
             }else if(str[0] === ','){
@@ -213,10 +213,10 @@ class Instruction implements IInstruction{
             }else{
                 return str;
             }
-        } 
-        
+        }
+
         // Returns true if any of the elements in the array starts or ends with a comma
-        let hasComma = (array: string[]) => {
+        const hasComma = (array: string[]) => {
             return array.join('').includes(',');
         }
 
@@ -244,24 +244,24 @@ class Instruction implements IInstruction{
     }
 
     /**
-     * 
-     * @param type Converts the values of 
+     *
+     * @param type Converts the values of
      */
     private convert(type: IRtype | IJtype | IItype) : void{
         this.type = type;
 
         /**
          *  Note
-         * 'this.convertFromAssemblyToDecimal()' must always be called before 
-         * 'this.convertFromDecimalToBinary()'because 'this.convertFromDecimalToBinary()' 
-         *  uses the value of 'this.decimal', which is set by 
+         * 'this.convertFromAssemblyToDecimal()' must always be called before
+         * 'this.convertFromDecimalToBinary()'because 'this.convertFromDecimalToBinary()'
+         *  uses the value of 'this.decimal', which is set by
          * 'this.convertFromAssemblyToDecimal()', otherwhise 'this.convertFromDecimalToBinary()'
          *  will return 'undefined'
          */
         this.convertFromAssemblyToDecimal();
         this.convertFromDecimalToBinary();
     }
-    
+
     private convertFromAssemblyToDecimal() : void{
         try {
             const result = assemblyToDecimal(this.type!);
@@ -301,11 +301,11 @@ class Instruction implements IInstruction{
         return this.assembly;
     }
 
-    public getDecimal(): Array<DecimalSchema> | undefined{
+    public getDecimal(): DecimalSchema[] | undefined{
         return this.decimal;
     }
 
-    public getBinary(): Array<BinarySchema> | undefined{
+    public getBinary(): BinarySchema[] | undefined{
         return this.binary;
     }
 
