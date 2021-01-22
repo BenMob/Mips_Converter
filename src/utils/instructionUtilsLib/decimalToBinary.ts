@@ -10,10 +10,10 @@ export interface BinarySchema {
 
 /**
  * converts the array of decimal numbers into binary
- * @param decimal 
- * @param bits 
+ * @param decimal
+ * @param bits
  */
-function decimalToBinary(decimal: Array<DecimalSchema>, bits: Array<number>): Array<BinarySchema> | undefined{
+function decimalToBinary(decimal: DecimalSchema[], bits: number[]): BinarySchema[] | undefined{
 
     try {
         if(decimal.length === bits.length){
@@ -35,14 +35,14 @@ function decimalToBinary(decimal: Array<DecimalSchema>, bits: Array<number>): Ar
             throw new Error(internalErrors.ERROR);
         }
     } catch (error) {
-        console.warn(error);   
+        console.warn(error);
     }
 }
 
 
 /**
  * Returns a version of the binary number formatted in the specified bit.
- * 
+ *
  * @param binary mult have less number of bits as the second parameter
  * @param bit 5, 6, 16 or 26 are the only accepted inputs
  */
@@ -50,10 +50,10 @@ const getValidBits = (binary: string, bit:number): string => {
     const expectedBits = [5, 6, 16, 26]
     const expectedBit = expectedBits.find(theBit => {
         return theBit === bit;
-    }) 
+    })
 
     if(expectedBit){
-        let listOfBits = Array.from(binary);
+        const listOfBits = Array.from(binary);
         while(listOfBits.length !== expectedBit){
             listOfBits.unshift("0");
         }

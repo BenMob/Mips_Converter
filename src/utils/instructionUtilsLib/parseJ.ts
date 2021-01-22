@@ -5,7 +5,7 @@
  }
 /**
  * Takes a sanitized input for J format instruction
- * and returns a on bject of elements that should be passed 
+ * and returns a on bject of elements that should be passed
  * in the Jtype Class as parameters.
  */
 
@@ -23,7 +23,7 @@
     } catch (error) {
         console.warn(error)
         return null;
-    } 
+    }
  }
 
  export default parseJ;

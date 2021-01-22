@@ -13,7 +13,7 @@
 
  function parseI(instructionArray: string[]): IParameters | null{
 
-    // Extract offset and source register from expression if tje instructionArray is of LW or SW 
+    // Extract offset and source register from expression if tje instructionArray is of LW or SW
     const peelOffset = (expression: string): {offset: string, reg: string} | null =>{
         const openingParenthesis = expression.indexOf('(');
         const closingParenthesis = expression.lastIndexOf(')');
@@ -29,7 +29,7 @@
             console.warn(error);
             return null;
         }
-    }   
+    }
 
 
     const expectedLengthByDefault = 4;
@@ -44,7 +44,7 @@
             }
         }else if(instructionArray.length === expectedLengthForLWandSW){
             const parsedExpression = peelOffset(instructionArray[expectedLengthForLWandSW - 1]);
-     
+
             if(parsedExpression){
                 return {
                    param1: instructionArray[0],
