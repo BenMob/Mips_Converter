@@ -15,7 +15,7 @@ class Itype implements IIntereface{
     public rt: number | undefined = undefined;
     public immediate: number | undefined = undefined;
     readonly errorMessages = ErrorMessages;
-    private errorMessage : undefined | string = undefined;    
+    private errorMessage : undefined | string = undefined;
 
     /**
      *
@@ -33,7 +33,7 @@ class Itype implements IIntereface{
             if(command){
                 this.instruction = command.instruction;
                 this.op = command.op;
-            } else { 
+            } else {
                 this.errorMessage = this.errorMessages.unSupportedOrInvalidCommand(instruction);
                 throw new Error(this.errorMessage);
             }
@@ -59,7 +59,7 @@ class Itype implements IIntereface{
             // validate Immediate
             if(immediate >= addresses.MIN && immediate <= addresses.MAX){
                 this.immediate = immediate;
-            }else{ 
+            }else{
                 this.errorMessage = this.errorMessages.IMMEDIATE_OUT_OF_RANGE
                 throw new Error(this.errorMessage);
             }
