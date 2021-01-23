@@ -1,7 +1,13 @@
-import Instruction from "../models/Instruction"
+import Instruction from "../models/Instruction";
+import registers from "../data/registers.json";
+import operations from "../data/operations.json";
 import express from "express";
 
-
+/**
+ * Processes instruction POST requests
+ * @param req
+ * @param res
+ */
 export const mipsToMachine = (req: express.Request, res: express.Response) => {
     const instruction = new Instruction(req.body.instruction);
 
@@ -19,5 +25,23 @@ export const mipsToMachine = (req: express.Request, res: express.Response) => {
             });
         }
     })
+}
+
+/**
+ * Processes GET requests for supported operations
+ * @param req
+ * @param res
+ */
+export const getOperations = (req: express.Request, res: express.Response) => {
+    res.json(operations);
+}
+
+/**
+ * Processes GET requests for supported registers
+ * @param req
+ * @param res
+ */
+export const getRegisters = (req: express.Request, res: express.Response) => {
+    res.json(registers);
 }
 
