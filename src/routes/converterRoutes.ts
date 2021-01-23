@@ -8,8 +8,7 @@
  router.get('/', (req, res) => {
      res.render('index');
  })
-
- router.post('/convert', mipsToMachine);
  
+ router.post('/convert', mipsToMachine);
 
  export default router;
