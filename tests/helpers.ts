@@ -19,7 +19,8 @@ export enum inputs{
     I_TYPE_ADDI = "addi $s5, $s6, 50",
     I_TYPE_LW = "lw $t0, 32($s3)",
     I_TYPE_SW = "sw $t0, 32($s3)",
-    J_TYPE_J = "j 0xc1c4"
+    J_TYPE_J_HEX = "j 0xc1c4",
+    J_TYPE_J_DECIMAL = "j 1000"
 }
 
 /******

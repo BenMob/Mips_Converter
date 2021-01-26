@@ -114,7 +114,7 @@ class Instruction implements IInstruction{
                             inputs = parseI(sanitizedInstruction);
                             let iType;
                             if(inputs) {
-                                const immediate = parseInt(inputs.param4, 10)
+                                const immediate = Number(inputs.param4)
 
                                 // Immediate is invslid, (i.e not a number)
                                 if(!immediate){
@@ -141,7 +141,7 @@ class Instruction implements IInstruction{
                             let jType;
 
                             if(inputs){
-                                const address = parseInt(inputs.param2, 16);
+                                const address = Number(inputs.param2);
                                 if(!address){
                                     reject(this.errorMessages.invalidImmediate(inputs.param2))
                                 }else{

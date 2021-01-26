@@ -27,6 +27,14 @@ class DOM{
         return document.createElement('td')
     }
 
+    static getTh(){
+        return document.createElement('th');
+    }
+
+    static setColSpan(element, number){
+        element.setAttribute("colspan", number);
+    }
+
     static addClass(node, classNames){
         if(classNames.length > 0){
             classNames.forEach(className => {

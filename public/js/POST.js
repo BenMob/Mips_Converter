@@ -19,7 +19,6 @@ const post = (url = "", data = {}) => {
         }).then((response) => {
             return response.json();
         }).then((data) => {
-            console.log(data)
             if(data.error){
                 clearAll();
                 displayError(data.errorMessage);

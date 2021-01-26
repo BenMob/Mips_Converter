@@ -33,7 +33,10 @@ export const mipsToMachine = (req: express.Request, res: express.Response) => {
  * @param res
  */
 export const getOperations = (req: express.Request, res: express.Response) => {
-    res.json(operations);
+    res.json({
+        type: "operations",
+        operations
+    });
 }
 
 /**
@@ -42,6 +45,10 @@ export const getOperations = (req: express.Request, res: express.Response) => {
  * @param res
  */
 export const getRegisters = (req: express.Request, res: express.Response) => {
-    res.json(registers);
-}
 
+
+    res.json({
+        type: "registers",
+        registers
+    });
+}

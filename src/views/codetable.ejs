@@ -5,8 +5,30 @@
     <%- include('./partials/head.ejs') %>
 </head>
 
-<body class="bg-black text-green-200 font-mono w3-animate-opacity">
+<body class="bg-black text-green-200 font-mono">
     <%- include('./partials/navbar.ejs') %>
+    <div class="pt-16 flex justify-center w3-animate-opacity h-screen">
+        <div>
+            <h1 class="text-3xl text-center font-bold p-6">Code Table</h1>
+            <div>
+                <table id="codetable" >
+
+                </table>
+            </div>
+            <p class="mt-2">Learn more on <span class="border-b"><a href="https://en.wikipedia.org/wiki/MIPS_architecture#Instruction_formats">Wikipedia.com</a></span></p>
+        </div>
+    </div>
+    <%- include('./partials/footer.ejs') %>
+    <!--
+        The following files must always keep this order
+    -->
+    <script src="js/DOM.js"></script> <!-- For helper functions to manipulate the DOM-->
+    <script src="js/CLASSES.js"></script> <!-- For CSS classes used in Javascript-->
+    <script src="js/TASKS.js"></script> <!-- For utility functions to perform tasks -->
+    <script src="js/PROCESSES.js"></script> <!-- For for calling utils.js functiion in order to perform tasks -->
+    <script src="js/GET.js"></script>
+    <script src="js/POST.js"></script> <!-- For processing all POST requests -->
+    <script src="js/codetable.js"></script>
 </body>
 
 </html>
