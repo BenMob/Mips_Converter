@@ -28,8 +28,12 @@ describe("Instruction Class", () => {
     const iTypeSw = new Instruction(inputs.I_TYPE_SW);
     iTypeSw.init();
 
-    const jTypeJ = new Instruction(inputs.J_TYPE_J);
-    jTypeJ.init();
+    const jTypeJHex = new Instruction(inputs.J_TYPE_J_HEX);
+    jTypeJHex.init();
+
+    const jTypeJDec = new Instruction(inputs.J_TYPE_J_DECIMAL);
+    jTypeJDec.init();
+
 
     /**
      *  Test init() on the "add" operation. 
@@ -174,17 +178,43 @@ describe("Instruction Class", () => {
     /**
      *  Test init() on the "j" operation. 
      */
-   it("init() method initializes 'type' attribute correctly on 'j' operation", () => {
+   it("init() method initializes 'type' attribute correctly on 'j' operation with hexadecimal address", () => {
 
         const j = operations.find(operation => operation.instruction === "j")!;
   
-        expect(isJtype(jTypeJ.getType() as Jtype_i, {
+        expect(isJtype(jTypeJHex.getType() as Jtype_i, {
             instruction: j.instruction,
             format: j.format,
             op: j.op,
             address: 49604
         })).toBe(true);
     })
+
+    /**
+     *  Test init() on the "j" operation. 
+     */
+   it("init() method initializes 'type' attribute correctly on 'j' operation with decimal address", () => {
+
+        const j = operations.find(operation => operation.instruction === "j")!;
+        
+        expect(isJtype(jTypeJDec.getType() as Jtype_i, {
+            instruction: j.instruction,
+            format: j.format,
+            op: j.op,
+            address: 1000
+        })).toBe(true);
+    })
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -415,9 +445,9 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
-    it("convertFromAssemblyToDecimal() converts successfully for Type J's 'j'", () => {
+    it("convertFromAssemblyToDecimal() converts successfully for Type J's 'j' with hexadecimal address", () => {
         const j = operations.find(operation => operation.instruction === "j")!;
-        expect(isExpectedDecimalSchema(jTypeJ.getDecimal(),
+        expect(isExpectedDecimalSchema(jTypeJHex.getDecimal(),
         [
             {
                 name: "op",
@@ -430,9 +460,35 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
+    it("convertFromAssemblyToDecimal() converts successfully for Type J's 'j' with decimal address", () => {
+        const j = operations.find(operation => operation.instruction === "j")!;
+        expect(isExpectedDecimalSchema(jTypeJDec.getDecimal(),
+        [
+            {
+                name: "op",
+                value: j.op
+            },
+            {
+                name: "address",
+                value: 1000
+            }
+        ])).toBe(true);
+    })
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
 
@@ -665,8 +721,8 @@ describe("Instruction Class", () => {
         ])).toBe(true);
     })
 
-    it("convertFromDecimalToBinary() converts successfully for Type J's 'j'", () => {
-        expect(isExpectedBinarySchema(jTypeJ.getBinary(),
+    it("convertFromDecimalToBinary() converts successfully for Type J's 'j' with hexadecimal address", () => {
+        expect(isExpectedBinarySchema(jTypeJHex.getBinary(),
         [
             {
                 name: "op",
@@ -676,6 +732,22 @@ describe("Instruction Class", () => {
             {
                 name: "address",
                 value: "00000000001100000111000100",
+                bits: 26
+            }
+        ])).toBe(true);
+    })
+
+    it("convertFromDecimalToBinary() converts successfully for Type J's 'j' with decimal address", () => {
+        expect(isExpectedBinarySchema(jTypeJDec.getBinary(),
+        [
+            {
+                name: "op",
+                value: "000010",
+                bits: 6
+            },
+            {
+                name: "address",
+                value: "00000000000000001111101000",
                 bits: 26
             }
         ])).toBe(true);
