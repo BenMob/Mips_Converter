@@ -17,7 +17,7 @@ class Server {
 
     // Initializes port and middleware.
     initMiddleWares(): void{
-        const port: number | string = process.env.PORT || 8080;                             // Declare the port.
+        const port: number | string = process.env.PORT || 3000;                             // Declare the port.
         app.listen(port, () => console.log(`Server running on http://localhost:${8080}`));  // Listen to the port.
         app.set("view engine", "ejs");                                                      // Set the template engine.
         app.set("views", "./src/views");                                                    // Set the location of templates.
