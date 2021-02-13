@@ -1,6 +1,9 @@
 /**
  * Define processes in which functions 
  */
+ 
+ const devPath = "http://localhost:3000/"
+ const appPath = "https://mips-converter.herokuapp.com/"
 
  class PROCESSES{
      /**
@@ -16,7 +19,7 @@
       */
      static processSubmission(){
         const instruction = document.querySelector("#input").value;
-        const url = "http://localhost:8080/convert";
+        const url = `${appPath}convert`;
         post(url, {instruction});
      }
 
@@ -24,8 +27,8 @@
       * Queries supported operations and registers
       */
      static getOperationsAndRegisters(){
-         const operationsURL = "http://localhost:8080/operations";
-         const registersURL = "http://localhost:8080/registers";
+         const operationsURL = `${appPath}operations`;
+         const registersURL = `${appPath}registers`
          get(operationsURL, this.pages.index);
          get(registersURL, this.pages.index);
      }
@@ -34,7 +37,7 @@
       * Queries operations
       */
      static getOperations(){
-        const operationsURL = "http://localhost:8080/operations";
+        const operationsURL = `${appPath}operations`;
         get(operationsURL, this.pages.codetable);
      }
 

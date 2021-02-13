@@ -6,11 +6,13 @@
   "directories": {
     "test": "tests"
   },
+  "engines": {"node": "v12.18.3"},
   "scripts": {
-    "build": "tsc",
+    "postinstall": "tsc",
     "prestart": "npm run build",
     "build:css": "postcss tailwindcss-cli@latest build ./src/stylesheets/styles.css -o ./public/css/styles.css",
-    "start": "node .",
+    "start":"node dist/app.js",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main",
     "test": "jest",
     "coverage": "jest --coverage"
   },
@@ -38,4 +40,5 @@
     "postcss-cli": "^8.3.1",
     "tailwindcss": "^2.0.2"
   }
+  
 }
