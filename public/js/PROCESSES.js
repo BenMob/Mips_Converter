@@ -2,8 +2,8 @@
  * Define processes in which functions 
  */
  
- const devPath = "http://localhost:3000/"
- const appPath = "https://mips-converter.herokuapp.com/"
+ const appPath = "http://localhost:3000/"
+ //const appPath = "https://mips-converter.herokuapp.com/"
 
  class PROCESSES{
      /**

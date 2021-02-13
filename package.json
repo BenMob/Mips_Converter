@@ -8,8 +8,9 @@
   },
   "engines": {"node": "v12.18.3"},
   "scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "postinstall": "tsc",
-    "prestart": "npm run build",
+    "prestart": "npm run postinstall",
     "build:css": "postcss tailwindcss-cli@latest build ./src/stylesheets/styles.css -o ./public/css/styles.css",
     "start":"node dist/app.js",
     "deploy": "git add . && git commit -m Heroku && git push heroku main",
